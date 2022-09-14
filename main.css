@@ -1,0 +1,112 @@
+html{
+    background-color:#253942;
+}
+h1{
+    color:white;
+    font-family: impact;
+    font-weight: lighter;
+    font-size:300%;
+}
+h2{
+    color:#1A2529;
+    font-family:impact;
+    font-weight:lighter;
+    padding:5px;
+}
+h3{
+    font-family: impact;
+    font-weight: lighter;
+    color: #1A2529;
+}
+#Logo{
+    width:8em;
+}
+#Header{
+    align-items: center;
+    display:block;
+    margin:auto;
+    width:fit-content;
+}
+#Header-left{
+    float:left;
+}
+#Header-right{
+    float:right;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #1A2529;
+}
+  
+li {
+    float: left;
+}
+  
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:x-large;
+}
+  
+  /* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #1C97D4;
+}
+
+.wrapper{
+    padding:20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(max-content, 1fr));
+    gap:20px;
+    grid-auto-rows: repeat(auto-fit, minmax(max-content, 1fr));
+}
+
+#Duplicate-Customers{
+    grid-column: 1;
+    grid-row: 1;
+}
+#Non-Native-GiftCards{
+    grid-column: 2;
+    grid-row: 1;
+}
+#FA-Split{
+    grid-column: 1;
+    grid-row: 2;
+}
+.tool{
+    background-color:#71b2ca;
+    box-shadow: -5px 5px #1A2529;
+    padding:10px
+}
+section{
+    margin:auto;
+    background-color: rgb(150, 150, 150);
+    width:90%;
+    padding:20px;
+    box-shadow:-3px 3px rgb(119, 119, 119);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(max-content, 1fr));
+    grid-auto-rows: repeat(auto-fit, minmax(max-content, 1fr));
+}
+.sectionLeft{
+    padding:20px;
+    background-color:grey;
+    grid-column:1;
+    text-align: center;
+    border:2px solid rgb(87, 87, 87);
+}
+.sectionRight{
+    padding:20px;
+    grid-column:2;
+    text-align:center;
+    border:2px solid rgb(87, 87, 87);
+    background-color:grey;
+}
