@@ -9,14 +9,15 @@ h1{
 }
 h2{
     color:#1A2529;
-    font-family:impact;
+    font-family:'Barlow';
     font-weight:lighter;
     padding:5px;
 }
 h3{
-    font-family: impact;
+    font-family: 'Familjen Grotesk';
     font-weight: lighter;
     color: #1A2529;
+    font-size:x-large;
 }
 #Logo{
     width:8em;
@@ -64,9 +65,11 @@ li a:hover {
 .wrapper{
     padding:20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(max-content, 1fr));
+    grid-template-columns: 50%;
     gap:20px;
-    grid-auto-rows: repeat(auto-fit, minmax(max-content, 1fr));
+    grid-template-rows: max-content;
+    text-align: center;
+    margin:auto;
 }
 
 #Duplicate-Customers{
@@ -89,24 +92,20 @@ li a:hover {
 section{
     margin:auto;
     background-color: rgb(150, 150, 150);
-    width:90%;
     padding:20px;
-    box-shadow:-3px 3px rgb(119, 119, 119);
+    box-shadow:-5px 5px rgb(119, 119, 119);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(max-content, 1fr));
-    grid-auto-rows: repeat(auto-fit, minmax(max-content, 1fr));
+    grid-template-columns: 50%;
+    grid-template-rows: max-content;
 }
 .sectionLeft{
     padding:20px;
-    background-color:grey;
     grid-column:1;
     text-align: center;
-    border:2px solid rgb(87, 87, 87);
+    border-right:3px solid grey;
 }
 .sectionRight{
     padding:20px;
     grid-column:2;
     text-align:center;
-    border:2px solid rgb(87, 87, 87);
-    background-color:grey;
 }

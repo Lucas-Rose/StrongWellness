@@ -3,9 +3,17 @@
     <head>
         <meta charset="utf-8">
         
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Barlow&family=Familjen+Grotesk&display=swap" rel="stylesheet">
+
+
         <link rel="stylesheet" href="main.css">
         <link rel="content" href="main.js">
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+        <title>Strong Wellness</title>
         
         <script>
             $(document).ready(function() {
@@ -26,59 +34,86 @@
             </ul>
         </div>
 
-        <div class="wrapper">
-            <div id="Duplicate-Customers" class="tool">
-                <h2>Duplicate Customer Report</h2>
-                <section>
-                    <div class="sectionLeft">
-                        <h3>Input</h3>
-                        <input type="file"
-                        id="customers" name="customers"
-                        accept=".csv">
-                    </div>
-                    <div class="sectionRight">
-                        <h3>Output</h3>
-                        <p>Downloadable link</p>
-                    </div>
-                </section>
-            </div>
+        <div class="container">
+            <py-env>
+                - pandas
+            </py-env>
+            <div class="wrapper">
+                <div id="Duplicate-Customers" class="tool">
+                    <h2>Duplicate Customer Report</h2>
+                    <section>
+                        <div class="sectionLeft">
+                            <h3>Input</h3>
+                            <input id="dupCust" type="file"
+                                name="customers"
+                                accept=".csv, .xlsx">
+                        </div>
+                        <div class="sectionRight">
+                            <h3>Output</h3>
+                            <div style="border:2px inset #AAA;cursor:text;height:120px;overflow:auto; resize:both">
+                                <span id="output">
 
-            <div id="Non-Native-GiftCards" class="tool">
-                <h2>Non-Native Gift Card Report</h2>
-                <section>
-                    <div class="sectionLeft">
-                        <h3>Input</h3>
-                        <input type="file"
-                        id="customers" name="customers"
-                        accept=".csv">
-                    </div>
-                    <div class="sectionRight">
-                        <h3>Output</h3>
-                        <p>Downloadable link</p>
-                    </div>
-                </section>
-            </div>
-
-            <div id="FA-Split" class="tool">
-                <h2>Float Attendant Revenue Report</h2>
-                <section>
-                    Work in Progress
-                </section>
+                                </span>
+                              </div>
+                            
+                        </div>
+                        
+                    </section>
+                </div>
+    
+                <div id="Non-Native-GiftCards" class="tool">
+                    <h2>Non-Native Gift Card Report</h2>
+                    <section>
+                        <div class="sectionLeft">
+                            <h3>Input</h3>
+                            <input type="file"
+                            id="dupCustomersFile" name="customers"
+                            accept=".csv">
+                        </div>
+                        <div class="sectionRight">
+                            <h3>Output</h3>
+                            <p>Downloadable link</p>
+                        </div>
+                    </section>
+                </div>
+    
+                <div id="FA-Split" class="tool">
+                    <h2>Float Attendant Revenue Report</h2>
+                    <section>
+                        Work in Progress
+                    </section>
+                </div>
             </div>
         </div>
-
-
-
-
-        <!--
+        <div id="print_output"></div>
         
-        -->
-        <!--
-        <div>
-            <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-            <py-script>print('Test')</py-script>
-        </div>
-        -->
+        <py-script output="print_output">
+            import asyncio
+            from js import document, FileReader
+            from pyodide import create_proxy
+            import pandas as pd
+            import io
+            
+            async def process_file(event):
+                file = event.target.files.to_py()
+                data=""
+                for f in file:
+                    data = await f.text()
+                csv_buffer = io.StringIO(data)
+                df = pd.read_csv(csv_buffer)
+                document.getElementById("output").innerHTML = df.head()
+            
+            def dupCustProxy():
+                # Create a Python proxy for the callback function
+                # process_file() is your function to process events from FileReader
+                file_event = create_proxy(process_file)
+            
+                # Set the listener to the callback
+                e = document.getElementById("dupCust")
+                e.addEventListener("change", file_event, False)
+            
+            dupCustProxy()
+            </py-script>
         
     </body>
 </html>
