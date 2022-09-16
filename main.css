@@ -15,6 +15,8 @@ h2{
     font-family:'Barlow';
     font-weight:lighter;
     padding:5px;
+    background-color: rgb(165, 165, 165);
+    box-shadow:-3px 3px rgba(0, 0, 0, 0.2);
 }
 h3{
     font-family: 'Familjen Grotesk';
@@ -54,7 +56,7 @@ li a {
   
   /* Change the link color to #111 (black) on hover */
 li a:hover {
-    background-color: #1C97D4;
+    background-color: #71b2ca;
 }
 .container{
     align-items: center;
@@ -79,19 +81,18 @@ li a:hover {
 }
 .tool{
     background-color:#71b2ca;
-    box-shadow: -5px 5px #1A2529;
+    box-shadow: -5px 5px rgba(0, 0, 0, 0.5);
     padding:10px;
 }
 section{
     display: grid;
-    background-color: rgb(150, 150, 150);
     padding:20px;
-    box-shadow:-5px 5px rgb(119, 119, 119);
     text-align: center;
 }
 .sectionLeft{
     grid-column:1;
-    border-right:3px solid grey;
+    border-right:3px solid #5f96aa;
+    width:auto;
 }
 .sectionRight{
     grid-column:2;
