@@ -3,9 +3,12 @@ html{
 }
 h1{
     color:white;
-    font-family: impact;
+    font-family: 'Anton';
     font-weight: lighter;
-    font-size:300%;
+    padding:20px;
+    font-size:400%;
+    margin:auto;
+    font-style: italic;
 }
 h2{
     color:#1A2529;
@@ -20,19 +23,10 @@ h3{
     font-size:x-large;
 }
 #Logo{
-    width:8em;
-}
-#Header{
-    align-items: center;
-    display:block;
-    margin:auto;
-    width:fit-content;
-}
-#Header-left{
-    float:left;
-}
-#Header-right{
-    float:right;
+    width:6em;
+    position: fixed;
+    top:20px;
+    right:20px;
 }
 
 ul {
@@ -53,23 +47,22 @@ li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Anton';
     font-size:x-large;
+    font-style: italic;
 }
   
   /* Change the link color to #111 (black) on hover */
 li a:hover {
     background-color: #1C97D4;
 }
-
+.container{
+    align-items: center;
+}
 .wrapper{
-    padding:20px;
     display: grid;
-    grid-template-columns: 50%;
-    gap:20px;
-    grid-template-rows: max-content;
-    text-align: center;
-    margin:auto;
+    padding:10px;
+    gap:10px;
 }
 
 #Duplicate-Customers{
@@ -81,31 +74,26 @@ li a:hover {
     grid-row: 1;
 }
 #FA-Split{
-    grid-column: 1;
-    grid-row: 2;
+    grid-column: 3;
+    grid-row: 1;
 }
 .tool{
     background-color:#71b2ca;
     box-shadow: -5px 5px #1A2529;
-    padding:10px
+    padding:10px;
 }
 section{
-    margin:auto;
+    display: grid;
     background-color: rgb(150, 150, 150);
     padding:20px;
     box-shadow:-5px 5px rgb(119, 119, 119);
-    display: grid;
-    grid-template-columns: 50%;
-    grid-template-rows: max-content;
+    text-align: center;
 }
 .sectionLeft{
-    padding:20px;
     grid-column:1;
-    text-align: center;
     border-right:3px solid grey;
 }
 .sectionRight{
-    padding:20px;
     grid-column:2;
     text-align:center;
 }
