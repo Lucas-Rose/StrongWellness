@@ -14,6 +14,7 @@
         <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
         <title>Strong Wellness</title>
+        <link rel = "icon" href = "images/icon.png" type = "image/x-icon">
         
         <script>
             $(document).ready(function() {
@@ -38,7 +39,10 @@
             </py-env>
             <div class="wrapper">
                 <div id="Duplicate-Customers" class="tool">
-                    <h2>Duplicate Customer Report</h2>
+                    <div class="tool-header">
+                        <h2>Duplicate Customer Report</h2>
+                        <p><i>Let's clean some data...</i></p>
+                    </div>
                     <section>
                         <div class="sectionLeft">
                             <h3>Input</h3>
@@ -55,7 +59,10 @@
                 </div>
     
                 <div id="Non-Native-GiftCards" class="tool">
-                    <h2>Non-Native Gift Card Report</h2>
+                    <div class="tool-header">
+                        <h2>Non-Native Gift Card Report</h2>
+                        <p><i>You're not from here?</i></p>
+                    </div>
                     <section>
                         <div class="sectionLeft">
                             <h3>Input</h3>
@@ -71,9 +78,31 @@
                 </div>
     
                 <div id="FA-Split" class="tool">
-                    <h2>Float Attendant Revenue Report</h2>
+                    <div class="tool-header">
+                        <h2>Float Attendant Revenue Report</h2>
+                        <p><i>The complete breakdown</i></p>
+                    </div>
                     <section>
                         <h3>Work in progress...</h3>
+                    </section>
+                </div>
+
+                <div id="Upgrade-Tally" class="tool">
+                    <div class="tool-header">
+                        <h2>Float Attendant Upgrade Leaderboard</h2>
+                        <p><i>You can never be too competitive...</i></p>
+                    </div>
+                    <section>
+                        <div class="sectionLeft">
+                            <h3>Input</h3>
+                            <input id="upgradeTally" type="file"
+                                name="upgradeTally"
+                                accept=".csv">
+                        </div>
+                        <div class="sectionRight">
+                            <h3>Output</h3>
+                            <div id="Upgrade-Tally-Output"></div>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -82,75 +111,185 @@
         <div id="print_output"></div>
         
         <py-script output="print_output">
-            import asyncio
-            from js import document, FileReader, Blob
-            from pyodide import create_proxy
-            import pandas as pd
-            import io
+import asyncio
+from js import document, FileReader
+from pyodide import create_proxy
+import pandas as pd
+import io
             
-            async def generate_duplicate_customers(event):
-                #READ AND PROCESS PROXY FILE
-                file = event.target.files.to_py()
-                data=""
-                for f in file:
-                    data = await f.text()
-                csv_buffer = io.StringIO(data)
+async def generate_duplicate_customers(event):
+    #READ AND PROCESS PROXY FILE
+    file = event.target.files.to_py()
+    data=""
+    for f in file:
+        data = await f.text()
+        csv_buffer = io.StringIO(data)
 
-                #FILTER FOR BAD CUSTOMERS
-                df = pd.read_csv(csv_buffer)
-                df['FullName'] = df['Customer First Name'] + " " + df['Customer Last Name']
-                dup_num = df.groupby('Phone').filter(lambda x: len(x) >= 2)
-                ready = dup_num.loc[:,['Phone', 'FullName', 'Email']]
-                out = ready.groupby('Phone').value_counts().to_csv()
+    #FILTER FOR BAD CUSTOMERS
+    df = pd.read_csv(csv_buffer)
+    df['FullName'] = df['Customer First Name'] + " " + df['Customer Last Name']
+    dup_num = df.groupby('Phone').filter(lambda x: len(x) >= 2)
+    ready = dup_num.loc[:,['Phone', 'FullName', 'Email']]
+    out = ready.groupby('Phone').value_counts().to_csv()
 
-                #APPEND DOWNLOADABLE CSV
-                element = document.createElement('a')
-                element.setAttribute('href', 'data:text/csv;charset=utf-8,' + out);
-                element.innerHTML = "Duplicate Customers Report"    
-                document.getElementById("dup-cust-output").appendChild(element)
+    #APPEND DOWNLOADABLE CSV
+    element = document.createElement('a')
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + out)
+    element.innerHTML = "Duplicate Customers Report"    
+    document.getElementById("dup-cust-output").appendChild(element)
 
-            async def generate_external_giftcards(event):
-                #READ AND PROCESS PROXY FILE
-                file = event.target.files.to_py()
-                data=""
-                for f in file:
-                    data = await f.text()
-                csv_buffer = io.StringIO(data)
+async def generate_external_giftcards(event):
+    #READ AND PROCESS PROXY FILE
+    file = event.target.files.to_py()
+    data=""
+    for f in file:
+        data = await f.text()
+        csv_buffer = io.StringIO(data)
 
-                #FILTER FOR EXTERNAL BOUGHT GIFTCARDS
-                df = pd.read_csv(csv_buffer)
-                test = df[['id', 'State', 'Customer Name', 'Items', 'Total']]
-                drop = test.dropna()
-                gc_sales = drop[drop['Items'].str.contains('for Gift Card')]
-                remove_MN = gc_sales[gc_sales['Items'].str.contains('nmin') == False]
-                remove_BV = remove_MN[remove_MN['Items'].str.contains('nbel') == False]
-                remove_RH = remove_BV[remove_BV['Items'].str.contains('nrou') == False]
-                final = remove_RH.to_csv()
+    #FILTER FOR EXTERNAL BOUGHT GIFTCARDS
+    df = pd.read_csv(csv_buffer)
+    test = df[['id', 'State', 'Customer Name', 'Items', 'Total']]
+    drop = test.dropna()
+    gc_sales = drop[drop['Items'].str.contains('for Gift Card')]
+    remove_MN = gc_sales[gc_sales['Items'].str.contains('nmin') == False]
+    remove_BV = remove_MN[remove_MN['Items'].str.contains('nbel') == False]
+    remove_RH = remove_BV[remove_BV['Items'].str.contains('nrou') == False]
+    final = remove_RH.to_csv()
 
-                #APPEND DOWNLOADABLE CSV
-                element = document.createElement('a')
-                element.setAttribute('href', 'data:text/csv;charset=utf-8,' + final);
-                element.innerHTML = "Non-Native GiftCard Report"    
-                document.getElementById("external-giftcard-output").appendChild(element)
+    #APPEND DOWNLOADABLE CSV
+    element = document.createElement('a')
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + final)
+    element.innerHTML = "Non-Native GiftCard Report"    
+    document.getElementById("external-giftcard-output").appendChild(element)
+
+async def generate_upgrade_tally(event):
+    #READ AND PROCESS PROXY FILE
+    file = event.target.files.to_py()
+    data=""
+    for f in file:
+        data = await f.text()
+        csv_buffer = io.StringIO(data)
+    
+    #FILTER FOR PACKAGE SALES & ATTENDANTS
+    df = pd.read_csv(csv_buffer)
+    findUpgrades(df)
+    df = excludeNormals(df)
+    imp = df[['Items', 'Closed By']]
+    count = imp.groupby('Closed By').value_counts()
+    tally = pd.DataFrame(data=count)
+    output_tally = tally.to_csv()
+
+    #APPEND DOWNLOADABLE CSV
+    element = document.createElement('a')
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + output_tally)
+    element.innerHTML = "FA Upgrade Tally"    
+    document.getElementById("Upgrade-Tally-Output").appendChild(element)
+
+def findUpgrades(df):
+    items = df['Items']
+    for i in range(len(items)):
+    
+        #Sauna
+        if('Sauna Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Sauna Intro Pack'
+            continue
+        if('Couples Sauna Intro pack' in items[i]):
+            df.loc[i,['Items']] = 'Couples Sauna Intro Pack'
+            continue
+        if('Infrared Sauna Intro pack upgrade' in items[i]):
+            df.loc[i,['Items']] = 'Sauna Intro Pack'
+            continue
+        if('Upgrade to Couples Infrared Sauna Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Couples Sauna Intro Pack'
+            continue
+        if('1 x SAUNA (CAVE CLUB) membership' in items[i]):
+            df.loc[i,['Items']] = 'Sauna Membership'
+            continue
+        if('Sauna 20 Pack' in items[i]):
+            df.loc[i,['Items']] = 'Sauna 20 Pack'
+            continue
+    
+        #Float
+        if('Float Starter Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Float Intro Pack'
+            continue
+        if('Couples Intro Float Pack' in items[i]):
+            df.loc[i,['Items']] = 'Couples Float Intro Pack'
+            continue
+        if('Float Therapy intro pack upgrade' in items[i]):
+            df.loc[i,['Items']] = 'Float Intro Pack'
+            continue
+        if('Upgrade to Couples Float Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Couples Float Intro Pack'
+            continue
+        if('1 x FLOAT (CAVE CLUB) membership' in items[i]):
+            df.loc[i,['Items']] = 'Float Membership'
+            continue
+        if('Float Therapy 24 Pack' in items[i]):
+            df.loc[i,['Items']] = 'Float 24 Pack'
+            continue
+        
+        #Massage
+        if('Massage Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Massage Intro Pack'
+            continue
+        if('Massage-Intro pack upgrade' in items[i]):
+            df.loc[i,['Items']] = 'Massage Intro Pack'
+            continue
+        if('1 x MASSAGE CAVE CLUB' in items[i]):
+            df.loc[i,['Items']] = 'Massage Membership'
+
+def excludeNormals(df):
+    items = df['Items']
+    for i in range(len(items)):
+        if(items[i] == 'Float Intro Pack'):
+            continue
+        if(items[i] == 'Couples Float Intro Pack'):
+            continue
+        if(items[i] == 'Float Membership'):
+            continue
+        if(items[i] == 'Float 24 Pack'):
+            continue
+        if(items[i] == 'Sauna Intro Pack'):
+            continue
+        if(items[i] == 'Couples Sauna Intro Pack'):
+            continue
+        if(items[i] == 'Sauna Membership'):
+            continue
+        if(items[i] == 'Sauna 20 Pack'):
+            continue
+        if(items[i] == 'Massage Intro Pack'):
+            continue
+        if(items[i] == 'Massage Membership'):
+            continue
+        df = df.drop(i)
+    return df
+
+def dupCustProxy():
+    # Create a Python proxy for the callback function
+    # generate_duplicate_customers() is your function to process events from FileReader
+    file_event = create_proxy(generate_duplicate_customers)
             
-            def dupCustProxy():
-                # Create a Python proxy for the callback function
-                # generate_duplicate_customers() is your function to process events from FileReader
-                file_event = create_proxy(generate_duplicate_customers)
-            
-                # Set the listener to the callback
-                e = document.getElementById("dupCust")
-                e.addEventListener("change", file_event, False)
+    # Set the listener to the callback
+    e = document.getElementById("dupCust")
+    e.addEventListener("change", file_event, False)
 
-            def extGCProxy():
-                # generate_external_giftcards() is your function to process events from FileReader
-                file_event = create_proxy(generate_external_giftcards)
-                e = document.getElementById("badGC")
-                e.addEventListener("change", file_event, False)
+def extGCProxy():
+    # generate_external_giftcards() is your function to process events from FileReader
+    file_event = create_proxy(generate_external_giftcards)
+    e = document.getElementById("badGC")
+    e.addEventListener("change", file_event, False)
+
+def upgradeLBProxy():
+    file_event = create_proxy(generate_upgrade_tally)
+    e = document.getElementById("upgradeTally")
+    e.addEventListener("change", file_event, False)
             
-            dupCustProxy()
-            extGCProxy()
-            </py-script>
+dupCustProxy()
+extGCProxy()
+upgradeLBProxy()
+
+        </py-script>
         
     </body>
 </html>

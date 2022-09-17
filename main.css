@@ -12,11 +12,8 @@ h1{
 }
 h2{
     color:#1A2529;
-    font-family:'Barlow';
     font-weight:lighter;
-    padding:5px;
-    background-color: rgb(165, 165, 165);
-    box-shadow:-3px 3px rgba(0, 0, 0, 0.2);
+    margin:0;
 }
 h3{
     font-family: 'Familjen Grotesk';
@@ -30,7 +27,12 @@ h3{
     top:20px;
     right:20px;
 }
-
+.tool-header{
+    font-family:'Barlow';
+    padding-left: 10px;
+    background-color: rgb(165, 165, 165);
+    box-shadow:-3px 3px rgba(0, 0, 0, 0.2);
+}
 ul {
     list-style-type: none;
     margin: 0;
