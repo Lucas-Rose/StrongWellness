@@ -18,6 +18,28 @@
         
         <script>
             $(document).ready(function() {
+                $('.patch-date-button').hide()
+                $('.patch-date-button').next().hide()
+
+                $('#patch-button').mouseover().css({'cursor':'pointer'})
+                $('.patch-date-button').mouseover().css({'cursor':'pointer'})
+
+                $('#patch-button').click(function(){
+                    if($('.patch-date-button').is(":visible")){
+                        $('.patch-date-button').hide()
+                        $('.patch-details').hide()
+                        return
+                    }
+                    $('.patch-date-button').show()
+                })
+                $('.patch-date-button').click(function(){
+                    if($(this).next().is(":visible")){
+                        $(this).next().hide()
+                        return
+                    }
+                    $(this).next().show()
+                })
+
             });
         </script>
     
@@ -79,11 +101,20 @@
     
                 <div id="FA-Split" class="tool">
                     <div class="tool-header">
-                        <h2>Float Attendant Revenue Report</h2>
-                        <p><i>The complete breakdown</i></p>
+                        <h2>Float Attendant Reservation Report</h2>
+                        <p><i>Comparative <strong>AND</strong> Correct</i></p>
                     </div>
                     <section>
-                        <h3>Work in progress...</h3>
+                        <div class="sectionLeft">
+                            <h3>Input</h3>
+                            <input id="bookingRevenue" type="file"
+                                name="bookingRevnue"
+                                accept=".csv">
+                        </div>
+                        <div class="sectionRight">
+                            <h3>Output</h3>
+                            <div id="booking-revenue-output"></div>
+                        </div>
                     </section>
                 </div>
 
@@ -108,6 +139,136 @@
             </div>
         </div>
         <img id="Logo" src="images/logo.png" alt="City Cave Logo">
+        <article class="Patch-Notes">
+            <h3 id="patch-button">Patch Notes</h3>
+            <p class="patch-date-button">Patch 1.4 18/09/2022:</p>
+            <ul class="patch-details">
+                <li><strong>New feature:</strong> Float Attendant Reservation Report:</li>
+                    <ul>
+                        <li>Input a reservations.csv for specific date range to separate and identify bookings and actual revenue made/received per F.A.</li>
+                        <li>Can be further altered as an excel file to determine percentage/ratio of revenue compared to total sales for date range and
+                            in comparison with bookings that didn't receive upselling/prepayment.
+                        </li>
+                        <li><strong>What this fixes:</strong></li>
+                        <ul>
+                            <li>Floathelm can't show you a report of bookings made by all employees. Without this functionality you would need to generate 'n'
+                                amount of csv files and patch them all together. While the algorithm does use slight hardcoding to prioritise staff made bookings,
+                                this is a lot faster than cut and pasting all the files together.
+                            </li>
+                        </ul>
+                        <li><strong>What can still be fixed:</strong></li>
+                        <ul>
+                            <li>As it stands, there are a couple of prepaid massage bookings that make it into the reservation report unintentionally.</li>
+                            <li>This is because for whatever reason we have over 50 different items for our massages that all serve the exact same purpose: <i>Delivering
+                                the exact same cost per massage.</i>
+                            <li>This is concurrent with the odd occurence of a particular massage on a schedule not being coloured dark blue despite having a valid
+                                massage credit on the user's account.
+                            </li>
+                            </li>
+                        </ul>
+                    </ul>
+                    <li><strong>Upcoming Features:</strong></li>
+                        <ul>
+                            <li>No upcoming functionalities thus far. However the website will be refactored to generate multiple composite reports with a single input
+                                as opposed to multiple redundant inputs of a particular file that is shared between functions
+                            </li>
+                            <li>For Example:</li>
+                            <ul>
+                                <li>Inputting a sales.csv will generate:</li>
+                                <ul>
+                                    <li>Non-Native Gift Card Report</li>
+                                    <li>Float Attendant Upgrade Leaderboard</li>
+                                </ul>
+                                <li>Inputting a customers.csv will generate:</li>
+                                <ul>
+                                    <li>Duplicate Customer Report</li>
+                                </ul>
+                                <li>Inputting a reservations.csv will generate:</li>
+                                <ul>
+                                    <li>Float Attendant Reservation Report</li>
+                                </ul>
+                            </ul>
+                            <li>Point being; functionalities that share alike inputs will be generated at the same time.</li>
+                        </ul>
+            </ul>
+            <p class="patch-date-button">Patch 1.3 17/09/2022</p>
+            <ul class="patch-details">
+                <li><strong>New Feature:</strong> Float Attendant Upgrade Leaderboard</li>
+                <ul>
+                    <li>
+                        Input a sales.csv for specific date range to separate and identify specific Float Attendant's success in upselling particular packages,
+                        specifically the packages requiring more intervention and customer service to make. Intro Packs, 20 Packs etc.
+                    </li>
+                    <li>Can be further added to, to show how much $ value particular Float Attendant's make with particular packages and their ability to upsell
+                        as a whole.
+                    </li>
+                    <li><strong>What this fixes:</strong></li>
+                    <ul>
+                        <li>
+                            Floathelm is unable to provide a quick analysis of how many of a particular package has been sold. While you can specify a data range on 
+                            package sales for a particular store, you are still required to manually hand count how many of each package has been sold.
+                        </li>
+                        <li>
+                            <i>But floathelm can count how many of each package has been sold?</i> Correct, but not as in-depth as we can. With the incredibly frequent
+                            and efficient use of the <i><strong>upgrade component,</strong></i> floathelm gets confused and doesn't quite understand when a combination of two item 
+                            sales creates an intro pack, especially when the closing of the two components are done on different days.
+                        </li>
+                        <li>An incredibly quick reference to understand how close you are to outselling a coworker and vice versa.</li>
+                    </ul>
+                </ul>
+                <li><strong>Upcoming Features:</strong></li>
+                <ul>
+                    <li>The Float Attendant Reservation Report:</li>
+                    <ul>
+                        <li>Whilst upselling is very much the fun of sales on the front. The majority of the montlhy sales come from the money made from the base booking itself.</li>
+                        <li>The purpose of this functionality will be to accurately determine who was responsible for 'x' amount of revenue for the month in comparison with another.</li>
+                    </ul>
+                </ul>
+            </ul>
+            <p class="patch-date-button">Patch 1.2 15/09/2022</p>
+            <ul class="patch-details">
+                <li><strong>New Features:</strong> Duplicate Customer Report, Non-Native Gift Card Report</li>
+                <ul>
+                    <li><strong>Duplicate Customer Report:</strong></li>
+                    <ul>
+                        <li>Input a customers.csv file to generate a list of duplicate customers within the system, including a vast number of reasons as to their creation:</li>
+                        <ul>
+                            <li>Float Attendants not taking emails</li>
+                            <li>Customers forgetting passwords and rather than resetting using a whole new email</li>
+                            <li>Float Attendants misspelling emails</li>
+                            <li>Parent-Child Relationship</li>
+                        </ul>
+                        <li><strong>What this fixes:</strong></li>
+                        <ul>
+                            <li>Doing this in juxt with the <strong>Customer Merge Tool</strong> in Floathelm will allow centres to clean their data and ultimately prevent
+                                customer complaints in the event that they have service credits that are unable to be found because they were bought on a different account.
+                            </li>
+                            <li>This also allows averages to become more true as the average follows as <strong><i>'Average = Total Sales/Total Customers,'</i></strong> 
+                                allowing for better numbers and recovered $ in lost averages.
+                            </li>
+                            <li>Cleaning our data with this tool will allow accuracy across all of Floathelm and Strong Wellness toolkit.</li>
+                        </ul>
+                    </ul>
+                    <li><strong>Non-Native Gift Card Report</strong></li>
+                    <ul>
+                        <li>Input a sales.csv to generate a list of all gift cards used outside of a given set of stores, what they were for, where they came from 
+                            and how much they were worth.
+                        </li>
+                        <li>Allows stores to see potential losses in the balance between booking numbers and revenue for the services themselves.</li>
+                        <li><strong>What this fixes:</strong></li>
+                        <ul>
+                            <li>Floathelm doesn't have this particular functionality within arms reach, at least 10 different actions must be performed to gain minor insight</li>
+                        </ul>
+                    </ul>
+                </ul>
+                <li><strong>Upcoming Features:</strong></li>
+                <ul>
+                    <li><strong><i>The Float Attendant Upgrade Leaderboard is coming back!</i></strong></li>
+                    <li>What once was an incredibly ambitious project to gain access to the floathelm backend has now been resurrected for the sake of monthly/weekly reporting.</li>
+                </ul>
+            </ul>
+            
+        </article>
         <div id="print_output"></div>
         
         <py-script output="print_output">
@@ -184,6 +345,28 @@ async def generate_upgrade_tally(event):
     element.setAttribute('href', 'data:text/csv;charset=utf-8,' + output_tally)
     element.innerHTML = "FA Upgrade Tally"    
     document.getElementById("Upgrade-Tally-Output").appendChild(element)
+
+async def generate_booking_revenue(event):
+    #READ AND PROCESS PROXY FILE
+    file = event.target.files.to_py()
+    data=""
+    for f in file:
+        data = await f.text()
+        csv_buffer = io.StringIO(data)
+    
+    #FILTER FOR NON-PREPAID BOOKINGS PER FA
+    df = pd.read_csv(csv_buffer)
+    excludeCustomers(df)
+    imp = df[['Service', 'Booked By', 'Service Credit Source', 'Customer First Name', 'Customer Last Name', 'Total Paid']]
+    remove_prepay = imp.loc[imp['Service Credit Source'] == 'individual']
+    count = remove_prepay.groupby('Booked By').value_counts()
+    out = count.to_csv()
+
+    #APPEND DOWNLOADABLE CSV
+    element = document.createElement('a')
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + out)
+    element.innerHTML = "FA Reservation Report"    
+    document.getElementById("booking-revenue-output").appendChild(element)
 
 def findUpgrades(df):
     items = df['Items']
@@ -265,6 +448,59 @@ def excludeNormals(df):
         df = df.drop(i)
     return df
 
+def excludeCustomers(df):
+    atts = df['Booked By']
+    for i in range(len(atts)):
+    
+        if('Cassie Berry 🍓' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Cassie Berry 🍓'
+            continue
+        if('Charlize Schoeman🧜' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Charlize Schoeman🧜'
+            continue
+        if('Elaria Tadros' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Elaria Tadros'
+            continue
+        if('Jacinta Galea 👸' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Jacinta Galea 👸'
+            continue
+        if('Jeremy Woodward🏃‍♂️' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Jeremy Woodward🏃‍♂️'
+            continue
+        if('Lucas Rose🥏' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Lucas Rose🥏'
+            continue
+        if('Nat Dolly🥳' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Nat Dolly🥳'
+            continue
+        if('Stella Halatanu' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Stella Halatanu'
+            continue
+        if('Tanya Motiani 🌟' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Tanya Motiani 🌟'
+            continue
+        if('Thomas Hogan 🎧' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Thomas Hogan 🎧'
+            continue
+        if('Wisdom Agbeze🧙' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Wisdom Agbeze🧙'
+            continue
+        if('Jaime Strong' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Jaime Strong'
+            continue
+        if('Kira Schembri 🍋' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Kira Schembri 🍋'
+            continue
+        if('Katelyn Woods 🍑' in atts[i]):
+            df.loc[i,['Booked By']] = 'Katelyn Woods 🍑'
+            continue
+        if('Judah Raposo Alves🦄' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Judah Raposo Alves🦄'
+            continue
+        if('Andrew Vecchio🤸🏻‍♂️' in atts[i]):
+            df.loc[i,['Booked By']] = 'AAA Andrew Vecchio🤸🏻‍♂️'
+            continue
+
 def dupCustProxy():
     # Create a Python proxy for the callback function
     # generate_duplicate_customers() is your function to process events from FileReader
@@ -284,12 +520,16 @@ def upgradeLBProxy():
     file_event = create_proxy(generate_upgrade_tally)
     e = document.getElementById("upgradeTally")
     e.addEventListener("change", file_event, False)
+
+def bookingRevenueProxy():
+    file_event = create_proxy(generate_booking_revenue)
+    e = document.getElementById("bookingRevenue")
+    e.addEventListener("change", file_event, False)
             
 dupCustProxy()
 extGCProxy()
 upgradeLBProxy()
-
+bookingRevenueProxy()
         </py-script>
-        
     </body>
 </html>

@@ -23,7 +23,7 @@ h3{
 }
 #Logo{
     width:6em;
-    position: fixed;
+    position: absolute;
     top:20px;
     right:20px;
 }
@@ -33,7 +33,7 @@ h3{
     background-color: rgb(165, 165, 165);
     box-shadow:-3px 3px rgba(0, 0, 0, 0.2);
 }
-ul {
+.navbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -41,11 +41,11 @@ ul {
     background-color: #1A2529;
 }
   
-li {
+.navbar > li {
     float: left;
 }
   
-li a {
+.navbar li a {
     display: block;
     color: white;
     text-align: center;
@@ -100,3 +100,16 @@ section{
     grid-column:2;
     text-align:center;
 }
+
+.Patch-Notes{
+    font-family: 'Familjen Grotesk';
+    padding:5px;
+    margin:auto;
+    width:50%;
+    background-color: rgb(255, 244, 147);
+    box-shadow:-3px 3px rgb(179, 171, 102);
+}
+.Patch-Notes > h3{
+    text-align: center;
+}
+
