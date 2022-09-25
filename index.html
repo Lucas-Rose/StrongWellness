@@ -136,6 +136,24 @@
                         </div>
                     </section>
                 </div>
+                <div id="First_Timer_Tally" class="tool">
+                    <div class="tool-header">
+                        <h2>First Timer Report</h2>
+                        <p><i>Who did they have on their first time?</i></p>
+                    </div>
+                    <section>
+                        <div class="sectionLeft">
+                            <h3>Input</h3>
+                            <input id="firstTimer" type="file"
+                                name="upgradeTally"
+                                accept=".csv">
+                        </div>
+                        <div class="sectionRight">
+                            <h3>Output</h3>
+                            <div id="First-Timer-Output"></div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
         <img id="Logo" src="images/logo.png" alt="City Cave Logo">
@@ -368,13 +386,58 @@ async def generate_booking_revenue(event):
     element.innerHTML = "FA Reservation Report"    
     document.getElementById("booking-revenue-output").appendChild(element)
 
+async def first_timer(event):
+    #READ AND PROCESS PROXY FILE
+    file = event.target.files.to_py()
+    data=""
+    for f in file:
+        data = await f.text()
+        csv_buffer = io.StringIO(data) 
+    
+    #FIND APPTS. THAT WERE UPGRADEABLE
+    df = pd.read_csv(csv_buffer)
+    df = df[['Service','Customer First Name', 'Customer Last Name', 'Customer Appointment Number','Total Paid', 'Checkout By']]
+    df = findUpgradable(df)
+    df = df.loc[df['Customer Appointment Number'] == 1]
+    df = df[['Checkout By', 'Service']]
+    df = df.groupby('Checkout By').value_counts()
+    new = pd.DataFrame(data=df)
+    output = new.to_csv()
+
+    #APPEND DOWNLOADABLE CSV
+    element = document.createElement('a')
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + output)
+    element.innerHTML = "First Timer Report"    
+    document.getElementById("First-Timer-Output").appendChild(element)
+
+
+def findUpgradable(df):
+    values = df['Total Paid']
+    for i in range(len(values)):
+        if(values[i] == '$79.00'):
+            continue
+        if(values[i] == '$94.00'):
+            continue
+        if(values[i] == '$44.00'):
+            continue
+        if(values[i] == '$59.00'):
+            continue
+        if(values[i] == '$90.00'):
+            continue
+        if(values[i] == '$110.00'):
+            continue
+        if(values[i] == '$150.00'):
+            continue
+        df = df.drop(i)
+    return df
+
 def findUpgrades(df):
     items = df['Items']
     for i in range(len(items)):
     
         #Sauna
-        if('Sauna Intro Pack' in items[i]):
-            df.loc[i,['Items']] = 'Sauna Intro Pack'
+        if('Upgrade to Couples Infrared Sauna Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Couples Sauna Intro Pack'
             continue
         if('Couples Sauna Intro pack' in items[i]):
             df.loc[i,['Items']] = 'Couples Sauna Intro Pack'
@@ -382,8 +445,8 @@ def findUpgrades(df):
         if('Infrared Sauna Intro pack upgrade' in items[i]):
             df.loc[i,['Items']] = 'Sauna Intro Pack'
             continue
-        if('Upgrade to Couples Infrared Sauna Intro Pack' in items[i]):
-            df.loc[i,['Items']] = 'Couples Sauna Intro Pack'
+        if('Sauna Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Sauna Intro Pack'
             continue
         if('1 x SAUNA (CAVE CLUB) membership' in items[i]):
             df.loc[i,['Items']] = 'Sauna Membership'
@@ -393,18 +456,19 @@ def findUpgrades(df):
             continue
     
         #Float
-        if('Float Starter Intro Pack' in items[i]):
-            df.loc[i,['Items']] = 'Float Intro Pack'
-            continue
         if('Couples Intro Float Pack' in items[i]):
             df.loc[i,['Items']] = 'Couples Float Intro Pack'
-            continue
-        if('Float Therapy intro pack upgrade' in items[i]):
-            df.loc[i,['Items']] = 'Float Intro Pack'
             continue
         if('Upgrade to Couples Float Intro Pack' in items[i]):
             df.loc[i,['Items']] = 'Couples Float Intro Pack'
             continue
+        if('Float Starter Intro Pack' in items[i]):
+            df.loc[i,['Items']] = 'Float Intro Pack'
+            continue
+        if('Float Therapy intro pack upgrade' in items[i]):
+            df.loc[i,['Items']] = 'Float Intro Pack'
+            continue
+        
         if('1 x FLOAT (CAVE CLUB) membership' in items[i]):
             df.loc[i,['Items']] = 'Float Membership'
             continue
@@ -525,11 +589,17 @@ def bookingRevenueProxy():
     file_event = create_proxy(generate_booking_revenue)
     e = document.getElementById("bookingRevenue")
     e.addEventListener("change", file_event, False)
+
+def firstTimerProxy():
+    file_event = create_proxy(first_timer)
+    e = document.getElementById("firstTimer")
+    e.addEventListener("change", file_event, False)
             
 dupCustProxy()
 extGCProxy()
 upgradeLBProxy()
 bookingRevenueProxy()
+firstTimerProxy()
         </py-script>
     </body>
 </html>
