@@ -292,7 +292,7 @@
         <py-script output="print_output">
 import asyncio
 from js import document, FileReader
-from pyodide import create_proxy
+from pyodide.ffi import create_proxy
 import pandas as pd
 import io
             
