@@ -113,3 +113,39 @@ section{
     text-align: center;
 }
 
+#input-grid{
+    font-family: 'Familjen Grotesk';
+    display: grid;
+    margin:20px;
+}
+
+.input-box{
+    background-color: #71b2ca;
+    width:16em;
+    height:16em;
+    box-shadow: -5px 5px black;
+    margin:auto;
+    padding:20px;
+    text-align: center;
+    position: relative;
+}
+.input-content{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+#customers-input{
+    grid-column:1
+}
+#sales-input{
+    grid-column: 2;
+}
+#reservations-input{
+    grid-column: 3;
+}
+
+py-config{
+    display:none
+}
